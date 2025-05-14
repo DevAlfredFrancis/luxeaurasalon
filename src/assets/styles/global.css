@@ -1,0 +1,110 @@
+/* global.css */
+
+.header-logo {
+    width: 10%;
+    height: auto !important;
+    vertical-align: top;
+}
+
+.nav-items {
+    width: 50%;
+    padding-left: 10%;
+    text-transform: unset !important;
+}
+
+.v-app-bar {
+    padding: 1%;
+    font-family: "Abel", sans-serif !important;
+    font-style: normal !important;
+    align-items: center;
+}
+
+.btn-login {
+    text-transform: unset;
+    font-weight: 600 !important;
+    margin-right: 1% !important;
+    text-transform: unset !important;
+}
+
+.btn-login:hover {
+    background-color: #393D40 !important;
+    color: #f4de9b;
+    font-weight: 600 !important;
+}
+
+.btn-booknow {
+    background: linear-gradient(135deg, #f4de9b 0%, #c3a36f 100%) !important;
+    border-radius: 9999px !important;
+    color: #393D40 !important;
+    width: 150px;
+    text-transform: unset !important;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 2px 20px 0 rgba(0,0,0,0.19) !important;
+    font-weight: 600 !important;
+    margin-right: 10% !important;
+}
+
+.hero-image {
+    width: 75%;
+    margin: auto;
+    padding: 1%;
+    opacity: 50% !important;
+}
+
+.hero-title {
+    font-family: "Barlow Condensed", sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 4em !important;
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.hero-text {
+    font-family: "Abel", sans-serif !important;
+    font-weight: normal !important;
+    font-size: 1.5em !important;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.nav-btns {
+    text-transform: unset !important;
+}
+
+
+.nav-btns:hover {
+    color: #F4DE9B !important;
+}
+
+.nav-btns:active {
+    color: #F4DE9B !important;
+    font-weight: bold !important;
+    border-bottom: 2px solid #F4DE9B;
+}
+
+/* 🔽 Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5em !important;
+        text-align: center;
+    }
+
+    .hero-text {
+        font-size: 1.2em !important;
+        text-align: center;
+    }
+
+    .btn-book-now {
+        font-size: 0.9em !important;
+        padding: 2% 4% !important;
+        max-width: 70vw !important;
+        max-height: 40px !important;
+    }
+
+    .v-container {
+        padding: 2% !important;
+    }
+
+    .hero-vcard {
+        text-align: center;
+    }
+}
