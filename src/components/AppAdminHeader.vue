@@ -4,7 +4,7 @@
 
         <v-col cols="12" md="2" class="d-flex justify-center align-center">
           
-            <v-icon icon="mdi-menu" size="large" class="floating-btn" color="#F4DE9B" @click="toggleDrawer?.()"></v-icon>
+            <v-icon :icon="isDrawerOpen ? 'mdi-close' : 'mdi-menu'" size="large" class="floating-btn" color="#F4DE9B" @click="toggleDrawer"></v-icon>
       
           <v-img
             style="margin: auto; max-width: 50% !important;"
@@ -37,8 +37,12 @@
 </template>
 
 <script setup>
-  import { inject } from 'vue'
-  const toggleDrawer = inject('toggleDrawer') // function provided by AdminLayout
+
+  import { inject, computed } from 'vue'
+
+  const toggleDrawer = inject('toggleDrawer')
+  const isDrawerOpen = inject('isDrawerOpen')
+    
 </script>
 
 <style>

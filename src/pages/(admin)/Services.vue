@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 120vh; padding: 2%;">
-    <h1 style="color: aquamarine;">services testing muna</h1>
+    <h1 style="color: #393D40;">This services section is under maintenance</h1>
   </div>
 </template>
 

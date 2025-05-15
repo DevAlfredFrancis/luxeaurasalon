@@ -7,22 +7,20 @@
         v-model="drawer"
         :permanent="!isMobile"
         :temporary="isMobile"
-        theme="light"
+        theme="dark"
       >
         <v-list>
           <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" to="/dashboard" />
-          <v-list-item prepend-icon="mdi-account-box" title="Services" to="/a_services" />
-          <v-list-item prepend-icon="mdi-gavel" title="Bookings" />
-          <v-list-item prepend-icon="mdi-gavel" title="Customer" />
-          <v-list-item prepend-icon="mdi-gavel" title="Sales" />
-          <v-list-item prepend-icon="mdi-gavel" title="Inventory" />
+          <v-list-item prepend-icon="mdi-list-box-outline" title="Salon Services" to="/services" />
+          <v-list-item prepend-icon="mdi-calendar-account-outline" title="Bookings" to="/bookings"/>
+          <v-list-item prepend-icon="mdi-account-box" title="Customer" to="/customers"/>
+          <v-list-item prepend-icon="mdi-chart-bar" title="Sales" to="/sales"/>
         </v-list>
 
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn block variant="outlined" color="#F4DE9B">
-              Logout
-            </v-btn>
+            <v-list-item prepend-icon="mdi-cog-outline" title="Settings"></v-list-item>
+            <v-list-item prepend-icon="mdi-logout" title="Log out"></v-list-item>
           </div>
         </template>
       </v-navigation-drawer>
@@ -41,7 +39,7 @@
   import { ref, computed } from 'vue'
   import { useDisplay } from 'vuetify'
 
-  const drawer = ref(true) // always visible by default on desktop
+  const drawer = ref(false) // always visible by default on desktop
 
   const { mobile } = useDisplay()
   const isMobile = computed(() => mobile.value)
@@ -50,6 +48,8 @@
   provide('toggleDrawer', () => {
     drawer.value = !drawer.value
   })
+
+  provide('isDrawerOpen', drawer)
 </script>
 
 <style scoped>
@@ -60,15 +60,21 @@
     scroll-behavior: smooth !important; 
   }
 
+  .v-navigation-drawer {
+    padding: 1%;
+    font-family: "Abel", sans-serif !important;
+    font-weight: normal !important;
+  }
+
   .v-list-item--active {
     color: #F4DE9B !important;
     font-weight: 600 !important;
+    background-color: #212121 !important;;
     
   }
 
   .v-list-item:hover {
     color: #F4DE9B !important;
-    
   }
 
   .v-btn:hover {
