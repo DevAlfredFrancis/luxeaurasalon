@@ -1,79 +1,109 @@
-# Vuetify (Default)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/DevAlfredFrancis/luxeaurasalon)
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
 
-## ❗️ Important Links
+# Luxe Aura Salon and Spa Appointment Booking App
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+Welcome to the Luxe Aura Salon and Spa booking app — an intuitive platform to book beauty treatments seamlessly.
 
-## 💿 Install
+---
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+## Features
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
+- Browse salon services with detailed descriptions  
+- Secure user registration and login  
+- Real-time appointment booking and calendar view  
+- Appointment rescheduling and cancellation  
+- Automated email/SMS reminders  
+- Admin dashboard to manage users, services, and appointments  
+- Responsive design for desktop and mobile  
 
-After completing the installation, your environment is ready for Vuetify development.
+---
 
-## ✨ Features
+## Tech stacks
 
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
+- Frontend: Vue 3, Vuetify, vite
+- Backend: Express.js  
+- Database: MySQL  
+- Version Control: Git & GitHub
+- Design : Figma and Adobe photoshop
 
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
+---
 
-## 💡 Usage
+### Prerequisites
 
-This section covers how to start the development server and build your project for production.
+- Node.js & npm installed  
+- MySQL server installed and running  
+- MySQL client or MySQL Workbench for database management  
 
-### Starting the Development Server
-
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
+### Installation
 
 ```bash
-yarn dev
+# Clone the repo
+git clone https://github.com/DevAlfredFrancis/luxeaurasalon.git
+
+# Install backend dependencies
+cd luxeaurasalon/backend
+npm install
+
+# Install frontend dependencies
+cd ../frontend
+npm install
+
+```
+### Database setup
+
+- Create a MySQL database for the project.
+- Import the SQL schema if you have one, or run migration scripts (if any).
+- Configure your database connection in your backend environment variables or config file (e.g., .env):
+
+```.env
+
+DB_HOST=localhost
+DB_USER=your_mysql_user
+DB_PASSWORD=your_mysql_password
+DB_NAME=your_db_Name
+
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
-
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
-
-### Building for Production
-
-To build your project for production, use:
+### Running the app
 
 ```bash
-yarn build
+
+# Start backend server
+cd backend
+npm start
+
+# Start frontend development server
+cd ../frontend
+npm run dev
+
+Access the app at http://localhost:3000
+
 ```
+### Screenshots
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+landing page: ![image](https://github.com/user-attachments/assets/17a78a6f-8796-44d7-a489-339eb8c165c6)
+login page: ![image](https://github.com/user-attachments/assets/d39f42f3-419b-4248-9061-54cfe6290634)
+sign up page: ![image](https://github.com/user-attachments/assets/34391d8a-a4be-4ddd-8616-76cdc060a6e9)
+booking page: ![image](https://github.com/user-attachments/assets/56cfd835-ca8e-403c-bbff-e2bef270fd34)
+booking page: ![image](https://github.com/user-attachments/assets/2a1be480-416f-4810-8285-781e5bad235d)
+booking page: ![image](https://github.com/user-attachments/assets/c4cd3c61-06a0-45c2-b8bd-3e7162955a5e)
+booking page: ![image](https://github.com/user-attachments/assets/c82f89f5-6c6d-4ded-a9f8-70bd8a115595)
+booking page: ![image](https://github.com/user-attachments/assets/3871bdcd-37be-4644-b3e8-a625a4265dd0)
+contact page: ![image](https://github.com/user-attachments/assets/83fe7494-0627-4ffc-a483-a5e74e9aad7e)
+admin login page: ![image](https://github.com/user-attachments/assets/58aa1d94-9886-423a-86df-217be6387615)
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
 
-## 💪 Support Vuetify Development
+### License
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
+### Contact
+For questions or support, contact:
+Your Name – ph.devaf@gmail.com
+GitHub: https://github.com/DevAlfredFrancis
+LinkedIn: https://www.linkedin.com/in/alframos/
 
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2016-present Vuetify, LLC
+
