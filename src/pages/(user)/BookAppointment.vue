@@ -1,5 +1,5 @@
 <template> 
-  <v-container style="padding: 1%; margin-top: 1%;">
+  <v-container class="app-bckground" style="padding: 1%; margin-top: 1%;" >
     <a
       v-if="step >= 1 && step <=3"
       style="color: #F4DE9B; display: block;  text-align: left !important; text-decoration: none; margin-left: 1%;"
@@ -151,10 +151,11 @@
                           md="3"
                         >
                           <v-btn
-                            v-bind:class="{ active: form.time === time }"
-                            class="time-btn"
+                            :class="['time-btn', { active: form.time === time, booked: bookedTimes.includes(time) }]"
                             variant="outlined"
                             color="primary"
+                            :disabled="bookedTimes.includes(time)"
+                            :title="bookedTimes.includes(time) ? 'Already booked' : ''"
                             @click="selectTime(time)"
                           >
                             {{ time }}
@@ -177,17 +178,18 @@
                           md="3"
                         >
                           <v-btn
-                            v-bind:class="{ active: form.time === time }"
-                            class="time-btn"
+                            :class="['time-btn', { active: form.time === time, booked: bookedTimes.includes(time) }]"
                             variant="outlined"
                             color="primary"
+                            :disabled="bookedTimes.includes(time)"
+                            :title="bookedTimes.includes(time) ? 'Already booked' : ''"
                             @click="selectTime(time)"
                           >
                             {{ time }}
                           </v-btn>
                         </v-col>
                       </v-row>
-                  </div>
+                    </div>
                   </div>              
 
                   <hr style="margin-bottom: 2%;"/>
@@ -442,8 +444,12 @@
   onMounted(async () => {
   // Fetch data from the backend API
     try {
+      // Fetch services
       const response = await axios.get('http://localhost:5000/api/data');
       services.value = response.data; // Store the response data in the ref
+
+      // Fetch bookings
+      await fetchBookings();
     } catch (error) {
       console.error("There was an error fetching the data:", error);
     }
@@ -524,6 +530,38 @@
     });
   }
 
+  const bookings = ref([]);
+
+  const fetchBookings = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/bookings');
+      bookings.value = res.data.map(b => ({
+        ...b,
+        start: new Date(b.start),
+        end: new Date(b.end)
+      }));
+    } catch (err) {
+      console.error('Error loading bookings:', err);
+    }
+  };
+
+  const bookedTimes = computed(() => {
+    if (!selectedDate.value) return [];
+
+    return bookings.value
+      .filter(event => {
+        const d = new Date(event.start);
+        return d.toDateString() === new Date(selectedDate.value).toDateString();
+      })
+      .map(event => {
+        const d = new Date(event.start);
+        const hours = d.getHours();
+        const minutes = d.getMinutes();
+        const period = hours < 12 ? 'AM' : 'PM';
+        return formatTime(hours, minutes, period); // reuse your formatTime()
+      });
+  });
+
   //customer form validation
   const firstName = ref('');
   const lastName = ref('');
@@ -589,48 +627,61 @@
     });
   });
 
+  //parse date and time before sending to database
+  function parseDateTime(dateStr, timeStr) {
+    const [hoursStr, minutesStr, period] = timeStr.match(/(\d+):(\d+)\s(AM|PM)/).slice(1);
+    let hours = parseInt(hoursStr);
+    const minutes = parseInt(minutesStr);
+
+    if (period === 'PM' && hours < 12) hours += 12;
+    if (period === 'AM' && hours === 12) hours = 0;
+
+    const date = new Date(dateStr);
+    date.setHours(hours, minutes, 0, 0);
+    return date;
+  }
+
+  //get current date and time
+  function getCurrentDateTimeInPH() {
+    const now = new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' });
+    const [date, time] = now.split(', ');
+    const [month, day, year] = date.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${time}`;
+  }
+
   //submit booking
   const submitBooking = async () => {
     const { valid } = await customerForm.value.validate();
     const bookingRef = generateBookingReference();
     const status = 'Scheduled';
     bookingReference.value = bookingRef;
-
-    // Get current date and time in Philippine Time (Asia/Manila)
-    const currentDate = new Date();
-    const formattedDateTime = currentDate.toLocaleString("en-US", { 
-      timeZone: "Asia/Manila" 
-    }).replace(',', ''); // Format: MM/DD/YYYY, HH:mm:ss
-
-    // Reformat the date-time to MySQL DATETIME format (YYYY-MM-DD HH:mm:ss)
-    const [date, time] = formattedDateTime.split(' ');
-    const [month, day, year] = date.split('/');
-    const mysqlDateTime = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')} ${time}`;
+    
+    const appointmentDateTime = parseDateTime(form.value.date, form.value.time);
+    const appointment_datetime = appointmentDateTime.toISOString(); // or format manually if needed
 
     if (valid) {
       try {
-        await axios.post('http://localhost:5000/api/book', {
+        await axios.post('http://localhost:5000/api/bookings/book', {
           firstName: firstName.value,
           lastName: lastName.value,
           email: email.value,
           mobileNumber: mobileNumber.value,
           services: selectedServices.value,
           bookingReference: bookingRef,
-          date: form.value.date,
-          time: form.value.time,
+          appointment_datetime,
           totalPrice: rawTotalPrice.value,
           status: status,
-          createdAt: mysqlDateTime
+          createdAt: getCurrentDateTimeInPH()
         });
-        console.log('Booking submitted!');
-        console.log("Selected services:", selectedServices.value);
-        step.value++;
-      } catch (error) {
-        console.error('Failed to submit booking:', error);
-    }
-  } else {
-      console.log('Validation failed');
-    }
+          console.log('Booking submitted!');
+          console.log("Selected services:", selectedServices.value);
+          step.value++;
+        } catch (error) {
+          console.error('Failed to submit booking:', error);
+      }
+    } else {
+        console.log('Validation failed');
+      }
   };
   
 </script>
@@ -688,4 +739,13 @@
     font-size: 1.2rem;
   }
 
+  /* Mobile override */
+  @media (max-width: 768px) {
+    .app-bckground {
+      background-attachment: scroll; /* fixes mobile issues */
+      background-position: center;
+      background-size: cover;
+      min-height: 132vh;
+    }
+  }
 </style>

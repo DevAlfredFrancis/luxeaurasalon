@@ -8,6 +8,7 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import { VCalendar } from 'vuetify/labs/VCalendar'
 
 export default createVuetify({
   theme: {
@@ -16,7 +17,7 @@ export default createVuetify({
       luxeAura: {
         dark: true,
         colors: {
-          background: '#393D40',
+          background: '#212121',
           surface: '#393D40',
           primary: '#F4DE9B',
           secondary: '#b0b4b8',
@@ -37,5 +38,8 @@ export default createVuetify({
         fontFamily: 'Abel, sans-serif',
       },
     },
+  },
+  components: {
+    VCalendar,
   },
 })

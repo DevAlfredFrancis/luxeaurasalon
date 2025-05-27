@@ -1,7 +1,7 @@
 <template>
   <v-container class="align-center">
     <v-img
-      src="../../assets/favicon.png"
+      src="@/assets/favicon.png"
       width="228"
       class="mx-auto mb-4"
     ></v-img>
@@ -16,7 +16,7 @@
             href='./'>
             <v-icon icon="mdi-close-circle-outline"></v-icon>
           </a>
-          <h1 style="margin: 4% 0% !important; text-align: center;">Welcome Back!</h1>
+          <h1 style="margin: 4% 0% !important; text-align: center;">Management System</h1>
 
           <v-btn prepend-icon="mdi-google"
             class="btn-login mb-8"

@@ -104,9 +104,9 @@
                     </v-row>
 
                     <v-btn
-                    class="btn-submit mb-5"
-                    >
-                    Submit
+                        class="btn-submit mb-5"
+                        >
+                        Submit
                     </v-btn>
 
                     <span class="text-left text-caption mb-4" style="padding: 0%; display: block;">

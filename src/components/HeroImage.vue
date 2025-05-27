@@ -29,8 +29,15 @@
         font-size: 1.2rem !important;
         padding: 1% 2% !important;
         border-radius: 9999px !important;
-        
         margin: 0 auto;
     }
+
+    /* Mobile override */
+  @media (max-width: 768px) {
+    .btn-book-now {
+        font-size: 1rem !important;
+        padding: 1% 3.5% !important;
+    }
+  }
     
 </style>

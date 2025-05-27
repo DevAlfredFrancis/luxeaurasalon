@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000; // Default to 3000 if PORT is not set in 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(bookingRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // MySQL connection setup
 const db = require('./db'); 

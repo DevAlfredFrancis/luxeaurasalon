@@ -1,45 +1,46 @@
 <template>
-  <AppAdminHeader style="min-width: 100%; padding: 1%;" />
-  <v-card>
-    <v-layout>
-      <!-- Responsive navigation drawer -->
-      <v-navigation-drawer
-        v-model="drawer"
-        :permanent="!isMobile"
-        :temporary="isMobile"
-        theme="dark"
-      >
-        <v-list>
-          <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" to="/dashboard" />
-          <v-list-item prepend-icon="mdi-list-box-outline" title="Salon Services" to="/services" />
-          <v-list-item prepend-icon="mdi-calendar-account-outline" title="Bookings" to="/bookings"/>
-          <v-list-item prepend-icon="mdi-account-box" title="Customer" to="/customers"/>
-          <v-list-item prepend-icon="mdi-chart-bar" title="Sales" to="/sales"/>
-        </v-list>
+  <v-layout>
+    <!-- Responsive navigation drawer -->
+    <v-navigation-drawer
+      v-model="drawer"
+      :permanent="!isMobile"
+      :temporary="isMobile"
+    >
+      <v-img
+          style="margin: auto; width: 90%;"
+          src="../assets/favicon2.png">
+      </v-img>
+      <p style="text-align: center; margin: 5% 0%;">Management System</p>
+      <hr />
+      <v-list style="margin-top: 15%;">
+        <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" to="/dashboard" />
+        <v-list-item prepend-icon="mdi-list-box-outline" title="Salon Services" to="/adminservices" />
+        <v-list-item prepend-icon="mdi-calendar-account-outline" title="Bookings" to="/bookings"/>
+        <v-list-item prepend-icon="mdi-account-box" title="Customer" to="/customers"/>
+        <v-list-item prepend-icon="mdi-chart-bar" title="Sales" to="/sales"/>
+      </v-list> 
 
-        <template v-slot:append>
-          <div class="pa-2">
-            <v-list-item prepend-icon="mdi-cog-outline" title="Settings"></v-list-item>
-            <v-list-item prepend-icon="mdi-logout" title="Log out"></v-list-item>
-          </div>
-        </template>
-      </v-navigation-drawer>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-list-item prepend-icon="mdi-cog-outline" title="Settings"></v-list-item>
+          <v-list-item prepend-icon="mdi-logout" title="Log out"></v-list-item>
+        </div>
+      </template>
+    </v-navigation-drawer>
 
-      <v-main
-        style="min-height: 88vh; background-color: #F0F1F3; border-radius: 4px !important;"
-        class="scrollable-tab-content"
-      >
-        <router-view />
-      </v-main>
-    </v-layout>
-  </v-card>
+    <v-main
+      style="min-height: 100vh ; background-color: #212121;"
+    >
+      <router-view />
+    </v-main>
+  </v-layout>
 </template>
 
 <script setup>
   import { ref, computed } from 'vue'
   import { useDisplay } from 'vuetify'
 
-  const drawer = ref(false) // always visible by default on desktop
+  const drawer = ref(true) // always visible by default on desktop
 
   const { mobile } = useDisplay()
   const isMobile = computed(() => mobile.value)
@@ -53,12 +54,6 @@
 </script>
 
 <style scoped>
-  .scrollable-tab-content {
-    max-height: 45vh;
-    overflow-y: auto;
-    scrollbar-width: none; 
-    scroll-behavior: smooth !important; 
-  }
 
   .v-navigation-drawer {
     padding: 1%;
@@ -68,13 +63,12 @@
 
   .v-list-item--active {
     color: #F4DE9B !important;
-    font-weight: 600 !important;
-    background-color: #212121 !important;;
-    
+    border-radius: 12px !important;
   }
 
   .v-list-item:hover {
     color: #F4DE9B !important;
+    border-radius: 12px !important;
   }
 
   .v-btn:hover {

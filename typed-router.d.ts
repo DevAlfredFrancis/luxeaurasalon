@@ -20,11 +20,11 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/(admin)/Admin': RouteRecordInfo<'/(admin)/Admin', '/Admin', Record<never, never>, Record<never, never>>,
+    '/(admin)/AdminServices': RouteRecordInfo<'/(admin)/AdminServices', '/AdminServices', Record<never, never>, Record<never, never>>,
     '/(admin)/Bookings': RouteRecordInfo<'/(admin)/Bookings', '/Bookings', Record<never, never>, Record<never, never>>,
     '/(admin)/Customers': RouteRecordInfo<'/(admin)/Customers', '/Customers', Record<never, never>, Record<never, never>>,
     '/(admin)/Dashboard': RouteRecordInfo<'/(admin)/Dashboard', '/Dashboard', Record<never, never>, Record<never, never>>,
     '/(admin)/Sales': RouteRecordInfo<'/(admin)/Sales', '/Sales', Record<never, never>, Record<never, never>>,
-    '/(admin)/Services': RouteRecordInfo<'/(admin)/Services', '/Services', Record<never, never>, Record<never, never>>,
     '/(user)/AboutUs': RouteRecordInfo<'/(user)/AboutUs', '/AboutUs', Record<never, never>, Record<never, never>>,
     '/(user)/BookAppointment': RouteRecordInfo<'/(user)/BookAppointment', '/BookAppointment', Record<never, never>, Record<never, never>>,
     '/(user)/Contact': RouteRecordInfo<'/(user)/Contact', '/Contact', Record<never, never>, Record<never, never>>,

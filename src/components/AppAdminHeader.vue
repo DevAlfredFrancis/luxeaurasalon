@@ -1,37 +1,26 @@
 <template>
-    <v-container style="background-color: #393D40;"> 
-      <v-row>
+    <v-container style="background-color: #393D40;" fluid class="d-flex justify-center align-center"> 
+      <v-row class="pa-0 ma-0 align-center justify-space-between">
 
-        <v-col cols="12" md="2" class="d-flex justify-center align-center">
-          
-            <v-icon :icon="isDrawerOpen ? 'mdi-close' : 'mdi-menu'" size="large" class="floating-btn" color="#F4DE9B" @click="toggleDrawer"></v-icon>
-      
-          <v-img
-            style="margin: auto; max-width: 50% !important;"
-            src="../assets/luxeAuraHorizontalLogo.png"
-          >
-          </v-img>
-        </v-col>
-
-        <v-col cols="12" md="8" class="d-flex justify-center align-center pt-7">
+        <v-col cols="12" md="3" sm="6" xs="6" class="align-center justify-center ma-0 pa-0">
           <v-text-field
-            style=" width: 100%;"
             density="compact"
-            placeholder="Search customer name, reference number, bookings"
+            placeholder="Search"
             prepend-inner-icon="mdi-magnify"
-            variant="outlined">
+            variant="outlined"
+            style="max-height: 40px !important;">
           </v-text-field>
         </v-col>
 
-        <v-col cols="12" md="1" sm="2" class="d-none d-sm-flex d-flex justify-center align-center" style="text-align: left !important;" >
+        <v-col cols="12" md="9"  style="text-align: right !important;" class="d-none d-flex justify-end align-center pa-0" >
           <v-icon
-          icon="mdi-bell-outline"
-          style="color: #5D6679;"
-        />
-        <v-avatar image="../assets/olivia-rhye.png"
-          style="color: #5D6679;"        />
+          icon="mdi-bell"
+          color="#F4DE9B"
+          />
+          <v-avatar image="../assets/olivia-rhye.png" style="color: #5D6679; border: 1px solid #F4DE9B; margin-left: 1%;"/>
+          <v-label style="padding: 0% 1% 0% 0.5%;">Diana Dela Cruz</v-label>
         </v-col>
-
+        
       </v-row>
     </v-container>
 </template>
