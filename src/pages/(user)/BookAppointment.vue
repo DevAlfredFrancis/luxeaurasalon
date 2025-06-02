@@ -145,7 +145,7 @@
                       <v-row class="mb-4">
                         <v-col
                           v-for="time in morningTimes"
-                          :key="'morning-' + time"
+                          :key="time"
                           cols="12"
                           sm="6"
                           md="3"
@@ -196,7 +196,7 @@
                   <v-row class="mb-2">
                     <v-col cols="12">
                       <v-alert type="info" variant="tonal" color="amber-darken-1" class="text-body-2">
-                        <strong>Note:</strong> Please select both a date and time to continue.
+                        <strong>Note:</strong> You can't book for today. Please choose another date. Select both the date and time to continue. 
                       </v-alert>
                     </v-col>
                   </v-row>
@@ -425,6 +425,7 @@
   const selectedServices = ref([])
   const MAX_SERVICES = 5;
 
+  //disable add button if selected services max
   function addService(service) {
     const exists = selectedServices.value.find(s => s.id === service.id)
     if (!exists && selectedServices.value.length < MAX_SERVICES) { //limit selected services to 5
@@ -436,16 +437,23 @@
   function isServiceAdded(serviceId) {
     return selectedServices.value.some(s => s.id === serviceId);
   }
+  //Remove selected service
   function removeService(serviceId) {
     selectedServices.value = selectedServices.value.filter(s => s.id !== serviceId)
   }
+
+  //Function to compute total service duration
+  const totalServiceDuration = computed(() => {
+    return selectedServices.value.reduce((sum, service) => sum + Number(service.duration_minutes || 0), 0);
+  });
+
 
   //axios
   onMounted(async () => {
   // Fetch data from the backend API
     try {
       // Fetch services
-      const response = await axios.get('http://localhost:5000/api/data');
+      const response = await axios.get('http://localhost:5000/api/services');
       services.value = response.data; // Store the response data in the ref
 
       // Fetch bookings
@@ -465,6 +473,7 @@
     }).format(price)
   }
 
+  // Update Tab based on services category
   const filteredServices = computed(() => {
   const tab = tabs[selectedTab.value]
 
@@ -488,19 +497,21 @@
   // Store selected date
   const selectedDate = ref(null)
 
-  // Get today’s date in YYYY-MM-DD format
+  //Disable past dates and present date,Get tomorrows date in YYYY-MM-DD format
   const today = new Date()
-  const minDate = today.toISOString().split('T')[0]
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const minDate = tomorrow.toISOString().split('T')[0]
 
   // Generate time slots based on a given start and end time
-  function generateTimeSlots(startHour, endHour, period) {
+  function generateTimeSlots(startHour, endHour) {
     const times = [];
     let startTime = startHour;
-    
+
     while (startTime <= endHour) {
       const hours = Math.floor(startTime);
       const minutes = (startTime % 1) * 60;
-      const formattedTime = formatTime(hours, minutes, period);
+      const formattedTime = formatTime(hours, minutes);
       times.push(formattedTime);
       startTime += 0.5; // 30-minute interval
     }
@@ -509,11 +520,13 @@
   }
 
   // Format time to 12-hour format with AM/PM
-  function formatTime(hours, minutes, period) {
-    const formattedMinutes = minutes === 0 ? '00' : minutes;
-    const formattedHours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours; // Convert to 12-hour format
-    const timeString = `${formattedHours}:${formattedMinutes} ${period}`;
-    return timeString;
+  function formatTime(hours24, minutes) {
+    const period = hours24 < 12 ? 'AM' : 'PM';
+    let hours12 = hours24 % 12;
+    if (hours12 === 0) hours12 = 12; // midnight or noon fix
+
+    const formattedMinutes = minutes === 0 ? '00' : minutes.toString().padStart(2, '0');
+    return `${hours12}:${formattedMinutes} ${period}`;
   }
 
   // Set the selected time to the form
@@ -521,6 +534,7 @@
     form.value.time = time;
   }
 
+  //format Date
   function formatSelectedDate(date) {
     return new Date(date).toLocaleDateString('en-US', {
       weekday: 'short',
@@ -530,8 +544,8 @@
     });
   }
 
+  //get data from bookings table
   const bookings = ref([]);
-
   const fetchBookings = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/bookings');
@@ -545,21 +559,27 @@
     }
   };
 
+  //disable time slot based on total duration successfully booked by client
   const bookedTimes = computed(() => {
-    if (!selectedDate.value) return [];
+    if (!form.value.date) return [];
 
-    return bookings.value
-      .filter(event => {
-        const d = new Date(event.start);
-        return d.toDateString() === new Date(selectedDate.value).toDateString();
-      })
-      .map(event => {
-        const d = new Date(event.start);
-        const hours = d.getHours();
-        const minutes = d.getMinutes();
-        const period = hours < 12 ? 'AM' : 'PM';
-        return formatTime(hours, minutes, period); // reuse your formatTime()
-      });
+    const selectedDateStr = new Date(form.value.date).toDateString();
+    const disabled = new Set();
+
+    bookings.value.forEach(event => {
+      const start = new Date(event.start);
+      const end = new Date(event.end);
+
+      if (start.toDateString() !== selectedDateStr) return;
+
+      let current = new Date(start);
+      while (current < end) {
+        disabled.add(formatTime(current.getHours(), current.getMinutes()));
+        current.setMinutes(current.getMinutes() + 30);
+      }
+    });
+
+    return Array.from(disabled);
   });
 
   //customer form validation
@@ -570,12 +590,14 @@
   const rawMobile = ref(''); // only 9 digits from user
   const customerForm = ref();
 
+  // name validation
   const nameRule = (v) => {
     if (!v) return 'This is required.';
     if (!/^[A-Za-z\s'-]+$/.test(v)) return 'Only letters, spaces, hyphens, or apostrophes are allowed.';
     return true;
   };
 
+  //only letters to input in name validation
   function onlyLettersInput(event) {
     const char = String.fromCharCode(event.charCode);
     if (!/^[A-Za-z\s'-]$/.test(char)) {
@@ -583,12 +605,14 @@
     }
   }
 
+  //mobile validation 
   const mobileRule = (v) => {
     if (!v) return 'Mobile number is required.';
     if (!/^\d{9}$/.test(v)) return 'Enter a valid mobile number';
     return true;
   };
 
+  //email validation
   const emailRule = (v) => {
     if (!v) return 'Email is required.';
     // Stricter email pattern
@@ -598,8 +622,6 @@
 
   // Combine +639 and raw input for submission
   const mobileNumber = computed(() => '+639' + rawMobile.value);
-
-  
 
   //checkbox notice
   const agreed = ref(false);
@@ -618,6 +640,7 @@
     return selectedServices.value.reduce((sum, service) => sum + Number(service.price), 0);
   });
   
+  //compute total price of selected services
   const totalPrice = computed(() => {
     const total = selectedServices.value.reduce((sum, service) => sum + Number(service.price), 0);
     return total.toLocaleString('en-PH', {
@@ -661,12 +684,13 @@
 
     if (valid) {
       try {
-        await axios.post('http://localhost:5000/api/bookings/book', {
+        await axios.post('http://localhost:5000/api/bookings', {
           firstName: firstName.value,
           lastName: lastName.value,
           email: email.value,
           mobileNumber: mobileNumber.value,
           services: selectedServices.value,
+          duration: totalServiceDuration.value,
           bookingReference: bookingRef,
           appointment_datetime,
           totalPrice: rawTotalPrice.value,
@@ -674,7 +698,7 @@
           createdAt: getCurrentDateTimeInPH()
         });
           console.log('Booking submitted!');
-          console.log("Selected services:", selectedServices.value);
+          console.log("Received duration:", totalServiceDuration.value);
           step.value++;
         } catch (error) {
           console.error('Failed to submit booking:', error);
@@ -692,17 +716,12 @@
     color: #393D40 !important;
   }
   .scrollable-tab-content {
-    max-height: 45vh;
+    max-height: 50vh;
     overflow-y: auto;
-    scrollbar-width: none; 
     scroll-behavior: smooth !important; 
-  }
-  .scrollable-tab-content:hover {
     scrollbar-width: thin; 
     scrollbar-color: #F4DE9B transparent;
     margin: 0px !important;
-    background-color: transparent !important;
-    scroll-behavior: smooth !important;
     white-space: nowrap;
   }
   .v-date-picker {

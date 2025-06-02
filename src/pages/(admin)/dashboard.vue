@@ -1,7 +1,6 @@
 <template>
   <v-container fluid style="padding: 0% 1%;">
-    <AppAdminHeader style="position: sticky; top: 0; z-index: 9; border-radius: 12px; margin-top: 1% !important;"/>
-    <h1>Hello, Admin</h1>
+    <AppAdminHeader style="position: sticky; border-radius: 12px; margin: 1%  0% !important;"/>
     <v-row cols="12">
       <v-col cols="12" md="8">
         <v-card class="pa-5" elevation="1" rounded="lg" style=" box-shadow: none !important; padding-bottom: 3.7% !important;">

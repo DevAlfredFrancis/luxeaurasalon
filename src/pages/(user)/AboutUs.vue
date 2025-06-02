@@ -1,6 +1,6 @@
 <template>
     <v-container style="margin: auto; border-radius: 12px; padding-top: 8% !important;">
-        <v-row class="fluid d-flex justify-center align-center">
+        <v-row class="fluid d-flex justify-center align-center mb-10">
 
             <v-col cols="12" md="9">
                 <h1 class="hero-title">Meet our CEO</h1>
@@ -12,18 +12,47 @@
                     <v-img
                         :src="currentImage"
                         :key="currentImage"
-                        class="ceo-img">
+                        min-width="300"
+                        min-height="450"
+                        cover
+                        style="background-color: antiquewhite; border-radius: 12px;">
                     </v-img>
                 </transition>
-                
             </v-col>
-
         </v-row>
     </v-container>
-    <div style="padding: 5% 0% !important; min-height: 50vh;">
-        <h1 style="text-align: center; margin-bottom: 5%; ">Our Team</h1>
-        <p>test</p>
-    </div>
+
+    <v-container fluid class="my-16" style="background-color: #212121;">
+        <h2 class="text-center font-weight-bold mb-10">OUR TEAM</h2>
+        <v-row dense>
+            <v-col
+                v-for="n in 6"
+                :key="n"
+                cols="12"
+                sm="6"
+                md="6"
+                class="d-flex justify-center">
+                <v-card width="500" height="450" elevation="2">
+                    <v-row>
+                        <v-col cols="12" md="6" >
+                            <v-skeleton-loader type="image" style="max-height: 140vh !important;" cover/>
+                        </v-col>
+
+                        <v-col cols="12" md="6" >
+                            <v-card-text>
+                                <div class="font-weight-bold mb-2">NAME</div>
+                                <div class="text-body-2">
+                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry...
+                                </div>
+                            </v-card-text>
+                        </v-col>
+
+                    </v-row>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
+
 </template>
 
 <script setup>
@@ -59,7 +88,6 @@
     .fade-enter-from, .fade-leave-to {
         opacity: 0;
     }
-
 </style>
 
 <route lang="json">

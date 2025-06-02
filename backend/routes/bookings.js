@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db'); 
 
-// send data to database
-router.post('/book', (req, res) => {
+// insert data to database at bookings table
+router.post('/', (req, res) => {
   const {
     firstName,
     lastName,
     email,
     mobileNumber,
     services,
+    duration,
     bookingReference,
     appointment_datetime,
     totalPrice,
@@ -19,8 +20,8 @@ router.post('/book', (req, res) => {
 
   const sql = `
     INSERT INTO bookings 
-    (first_name, last_name , email, mobile_number, services, booking_reference, appointment_datetime, total_price, status, created_at) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    (first_name, last_name , email, mobile_number, services, duration, booking_reference, appointment_datetime, total_price, status, created_at) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const serviceNames = Array.isArray(services)
@@ -44,6 +45,7 @@ router.post('/book', (req, res) => {
     email,
     mobileNumber,
     servicesString,
+    duration,
     bookingReference,
     formattedAppointmentDatetime,
     totalPrice,
@@ -59,17 +61,18 @@ router.post('/book', (req, res) => {
   });
 });
 
-//receive data from database
+//get data from database
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.promise().query(`
-      SELECT first_name, last_name, appointment_datetime, services ,status
+      SELECT id, first_name, last_name, mobile_number, appointment_datetime, services ,duration, booking_reference, total_price, status
       FROM bookings
     `);
 
     const events = rows.map(booking => {
       const startDateTime = new Date(booking.appointment_datetime);
-      const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000); // +1 hour
+      const endDateTime = new Date(startDateTime.getTime() + (booking.duration || 60) * 60 * 1000); // plus total services duration
+      
 
       let serviceNames = [];
       try {
@@ -81,11 +84,15 @@ router.get('/', async (req, res) => {
       }
 
       return {
+        id: booking.id,
         title: `${booking.first_name} ${booking.last_name}`,
+        contact: booking.mobile_number,
         services: `${serviceNames.join(', ')}`,
         status: booking.status,
         start: startDateTime.toISOString(),
         end: endDateTime.toISOString(),
+        bookingRef: booking.booking_reference,
+        totalPrice: booking.total_price,
         class: booking.status
       };
     });
@@ -97,5 +104,30 @@ router.get('/', async (req, res) => {
   }
 });
 
+// update booking status by ID
+router.put('/:id/status', async (req, res) => {
+  const bookingId = req.params.id;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ error: 'Status is required' });
+  }
+
+  try {
+    const [result] = await db.promise().query(
+      'UPDATE bookings SET status = ? WHERE id = ?',
+      [status, bookingId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    res.json({ message: 'Booking status updated successfully' });
+  } catch (err) {
+    console.error('Error updating booking status:', err);
+    res.status(500).json({ error: 'Database error while updating status' });
+  }
+});
 
 module.exports = router;

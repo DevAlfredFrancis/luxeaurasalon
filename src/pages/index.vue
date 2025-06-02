@@ -1,6 +1,6 @@
 <template>
   <HeroImage style="margin-top: 8%;"></HeroImage>
-  <div style="background-color: white; margin-top: 8%;">
+  <div style="margin-top: 8%;">
     <v-carousel
       ref="carouselRef"
       height="400"
@@ -37,7 +37,7 @@
 
   //display carousel
   const carouselRef = ref(null)
-  const autoplay = ref(true) // custom autoplay control
+  const autoplay = ref(true) // custom autoplay controls
 
   const colors = [
     '#404448',      

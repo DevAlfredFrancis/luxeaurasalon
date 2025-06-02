@@ -3,25 +3,22 @@
         height="400"
         show-arrows="hover"
         cycle
-        hide-delimiter-background
-    >
+        hide-delimiter-background >
         <v-carousel-item
-        v-for="(slide, i) in slides"
-        :key="i"
-        >
-        <v-sheet
-            :color="colors[i]"
-            height="100%"
-        >
-            <div class="d-flex fill-height justify-center align-center">
-            <div class="text-h2">
-                {{ slide }} Slide
-            </div>
-            </div>
-        </v-sheet>
+            v-for="(slide, i) in slides"
+            :key="i"
+            >
+            <v-sheet
+                :color="colors[i]"
+                height="100%">
+                <div class="d-flex fill-height justify-center align-center">
+                    <div class="text-h2">
+                        {{ slide }} Slide
+                    </div>
+                </div>
+            </v-sheet>
         </v-carousel-item>
     </v-carousel>
-    <ListServices />
 </template>
 <script setup>
   const colors = [

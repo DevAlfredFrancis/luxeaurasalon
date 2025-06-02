@@ -1,110 +1,109 @@
 <template>
   <div style="padding: 5% 0% !important; min-height: 100vh !important;">
-    <h1 style="text-align: center; margin-bottom: 5%;">Our Services</h1>
-    <v-card>
-      
-      <v-tabs
-        v-model="selectedTab"
-        align-tabs="center"
-        color="#F4DE9B">
-        <v-tab v-for="tab in tabs" :key="tab">{{ tab }}</v-tab>
-      </v-tabs>
-      <div class="scrollable-tab-content">
-        <v-tabs-window v-model="selectedTab" style="margin-bottom: 1%;">
-          <v-tabs-window-item
-            v-for="n in 5"
-            :key="n"
-            :value="n"
-          >
-          
-              <v-container fluid>
-                <v-row>
-                  <v-col v-for="item in filteredServices" :key="item.id" cols="12" md="6">
-                    <v-card style="background-color: #404448;" class="pa-4">
-                      <v-row>
-                        <!-- Left Column for Service Details -->
-                        <v-col cols="8">
-                          <div>
-                            <h3 style="font-size: 20px;">{{ item.services_name }}</h3>
-                            <p style="font-size: 14px; color: #ccc;">{{ item.duration_minutes }} minutes</p>
-                            <p style="font-size: 16px;">{{ formatPrice(item.price) }}</p>
-                          </div>
-                        </v-col>
+    <h1 style="text-align: center;">Our Services</h1>
+    <v-container class="my-16">
+      <v-row class="d-flex align-center">
+        <!-- Image on the Left -->
+        <v-col cols="12" md="6">
+          <v-img
+            src="@/assets/hair_service.jpg"
+            alt="Hair Services"
+            height="400"
+            cover
+            class="rounded"
+          ></v-img>
+        </v-col>
 
-                      </v-row>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-container>
-        
-          </v-tabs-window-item>
-        </v-tabs-window>
-      </div>
-    </v-card>
+        <!-- Description on the Right -->
+        <v-col cols="12" md="6">
+          <h2 class="font-weight-bold mb-4">Hair Services</h2>
+          <p class="text-body-1">
+            At Luxe Aura Salon and Spa, our expert Hair stylists offer precision cuts, vibrant colors, and nourishing treatments tailored to enhance your personal style.
+            Whether you're looking for a bold transformation or a refreshing touch-up, our team ensures every visit leaves you looking and feeling radiant.
+          </p>
+        </v-col>
+      </v-row>
+
+      <hr style="margin: 2% 0%" />
+
+      <v-row class="d-flex align-center">
+        <!-- Image on the Left -->
+        <v-col cols="12" md="6">
+          <v-img
+            src="@/assets/nails_service.jpg"
+            alt="Hair Services"
+            height="400"
+            cover
+            class="rounded"
+          ></v-img>
+        </v-col>
+
+        <!-- Description on the Right -->
+        <v-col cols="12" md="6">
+          <h2 class="font-weight-bold mb-4">Nail Services</h2>
+          <p class="text-body-1">
+            Treat your hands and feet to our premium nail services, where beauty meets precision. Whether you're after a classic manicure, a long-lasting gel polish, or detailed nail art,
+            our skilled technicians ensure every nail is a statement of style and care. Clean, relaxing, and polished to perfection—just like you deserve.
+          </p>
+        </v-col>
+      </v-row>
+
+      <hr style="margin: 2% 0%" />
+
+      <v-row class="d-flex align-center">
+        <!-- Image on the Left -->
+        <v-col cols="12" md="6">
+          <v-img
+            src="@/assets/spa_service.jpg"
+            alt="Spa Services"
+            height="400"
+            cover
+            class="rounded"
+          ></v-img>
+        </v-col>
+
+        <!-- Description on the Right -->
+        <v-col cols="12" md="6">
+          <h2 class="font-weight-bold mb-4">Spa Services</h2>
+          <p class="text-body-1">
+            Pamper yourself with our luxurious Hand and Foot Spa treatments, designed to soothe, hydrate, and rejuvenate tired limbs. 
+            From exfoliating scrubs and nourishing masks to relaxing massages and cuticle care, our spa experience offers the perfect escape to refresh your hands and feet with elegance and care.
+          </p>
+        </v-col>
+      </v-row>
+
+      <hr style="margin: 2% 0%" />
+
+      <v-row class="d-flex align-center">
+        <!-- Image on the Left -->
+        <v-col cols="12" md="6">
+          <v-img
+            src="@/assets/makeup_service.jpg"
+            alt="Makeup Services"
+            height="400"
+            cover
+            class="rounded"
+          ></v-img>
+        </v-col>
+
+        <!-- Description on the Right -->
+        <v-col cols="12" md="6">
+          <h2 class="font-weight-bold mb-4">Makeup Services</h2>
+          <p class="text-body-1">
+            Whether it’s for a wedding, a photoshoot, or a night out, our professional Makeup artists create flawless, personalized looks that highlight your natural beauty. 
+            Using high-quality products and techniques, we ensure every application enhances your features and gives you lasting confidence.
+          </p>
+        </v-col>
+      </v-row>
+
+      <hr style="margin: 2% 0%" />
+    </v-container>
   </div>
 </template>
 
 <script setup>
-  import { ref, computed, onMounted } from 'vue';
-  import axios from 'axios';
-  
-  const step = ref(1);
-  const selectedTab = ref(0)
-
-  const tabs = ['All Services', 'Hair', 'Nails', 'Spa', 'Other']
-  const services = ref([])
-
-  //axios
-  onMounted(async () => {
-  // Fetch data from the backend API
-    try {
-      const response = await axios.get('http://localhost:5000/api/data');
-      services.value = response.data; // Store the response data in the ref
-    } catch (error) {
-      console.error("There was an error fetching the data:", error);
-    }
-  });
-
-  //function to formatPrice
-  function formatPrice(price) {
-    return new Intl.NumberFormat('en-PH', {
-      style: 'currency',
-      currency: 'PHP',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price)
-  }
-
-  const filteredServices = computed(() => {
-  const tab = tabs[selectedTab.value]
-
-    if (tab === 'All Services') return services.value
-    return services.value.filter(service =>
-      service.category.toLowerCase() === tab.toLowerCase()
-    )
-  })
-
-
-
-
-
 
 </script>
+
 <style>
-
-  .scrollable-tab-content {
-    max-height: 45vh;
-    overflow-y: auto;
-    scrollbar-width: none; 
-    scroll-behavior: smooth !important; 
-  }
-  .scrollable-tab-content:hover {
-    scrollbar-width: thin; 
-    scrollbar-color: #F4DE9B transparent;
-    margin: 0px !important;
-    background-color: transparent !important;
-    scroll-behavior: smooth !important;
-    white-space: nowrap;
-  }
-
 </style>

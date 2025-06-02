@@ -1,36 +1,53 @@
 <template>
     <v-container style="background-color: #393D40;" fluid class="d-flex justify-center align-center"> 
-      <v-row class="pa-0 ma-0 align-center justify-space-between">
+      <v-row class="pa-0 ma-0 align-center justify-space-between" no-gutters>
 
-        <v-col cols="12" md="3" sm="6" xs="6" class="align-center justify-center ma-0 pa-0">
+        <!-- Burger Icon (Mobile Only) -->
+        <v-col cols="auto" class="d-md-none">
+          <v-icon icon="mdi-menu" color="#F4DE9B" @click="toggleDrawer" />
+        </v-col>
+
+        <!-- Search Field -->
+        <v-col cols="auto" class="flex-grow-1 px-1">
           <v-text-field
             density="compact"
             placeholder="Search"
             prepend-inner-icon="mdi-magnify"
             variant="outlined"
-            style="max-height: 40px !important;">
-          </v-text-field>
+            style="max-height: 40px !important;"
+            hide-details
+          />
         </v-col>
 
-        <v-col cols="12" md="9"  style="text-align: right !important;" class="d-none d-flex justify-end align-center pa-0" >
-          <v-icon
-          icon="mdi-bell"
-          color="#F4DE9B"
-          />
-          <v-avatar image="../assets/olivia-rhye.png" style="color: #5D6679; border: 1px solid #F4DE9B; margin-left: 1%;"/>
+        <!-- Notification Icon -->
+        <v-col cols="auto" class="px-1">
+          <v-icon icon="mdi-bell" color="#F4DE9B" />
+        </v-col>
+
+        <!-- Avatar -->
+        <v-col cols="auto" class="px-1">
+          <v-avatar image="../assets/olivia-rhye.png" style="background-color: #F4DE9B;" />
+        </v-col>
+
+        <!-- Name (Desktop Only) -->
+        <v-col cols="auto" class="d-none d-md-inline">
           <v-label style="padding: 0% 1% 0% 0.5%;">Diana Dela Cruz</v-label>
         </v-col>
-        
+
       </v-row>
     </v-container>
 </template>
 
 <script setup>
 
-  import { inject, computed } from 'vue'
+  import { ref, inject } from 'vue'
 
   const toggleDrawer = inject('toggleDrawer')
-  const isDrawerOpen = inject('isDrawerOpen')
+  const showSearch = ref(false)
+
+  const toggleSearch = () => {
+  showSearch.value = !showSearch.value
+}
     
 </script>
 
