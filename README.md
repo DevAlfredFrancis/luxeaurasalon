@@ -47,7 +47,7 @@ cd luxeaurasalon/backend
 npm install
 
 # Install frontend dependencies
-cd ../frontend
+cd luxeaurasalon
 npm install
 
 ```
@@ -99,10 +99,10 @@ admin login page: ![image](https://github.com/user-attachments/assets/58aa1d94-9
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ### Contact
-For questions or support, contact:
-Your Name – ph.devaf@gmail.com
-GitHub: https://github.com/DevAlfredFrancis
-LinkedIn: https://www.linkedin.com/in/alframos/
+#For questions or support, contact:
+#Your Name – ph.devaf@gmail.com
+#GitHub: https://github.com/DevAlfredFrancis
+#LinkedIn: https://www.linkedin.com/in/alframos/
 
 
 
